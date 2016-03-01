@@ -47,6 +47,7 @@
             keyboardScrolling: true,
             sectionSelector: '.section',
             animateAnchor: false,
+            minWidth: 1024,
 
             //events
             afterLoad: null,
@@ -444,6 +445,20 @@
             }
             return false;
         }
+        
+        //detecting any change in the browser size
+        $(window).resize(windowResizeHandler);
+
+        /**
+        * If the browser is smaller than the minimum width, revert the touch-action to initial
+        */
+        function windowResizeHandler(){
+                if ($(window).width() < options.minWidth){
+                    container.css("touch-action","initial");
+                } else {
+                   container.css("touch-action","none");
+                }
+        }
 
         //detecting any change on the URL to scroll to the given anchor link
         //(a way to detect back history button as we play with the hashes on the URL)
@@ -789,44 +804,47 @@
         */
         function touchMoveHandler(event){
             var e = event.originalEvent;
+            
+            if ($(window).width() >= options.minWidth){
 
-            // additional: if one of the normalScrollElements isn't within options.normalScrollElementTouchThreshold hops up the DOM chain
-            if ( !checkParentForNormalScrollElement(event.target) && isReallyTouch(e) ) {
-
-                var activeSection = $('.pp-section.active');
-                var scrollable = isScrollable(activeSection);
-
-                if(!scrollable.length){
-                    event.preventDefault();
-                }
-
-                if (!isMoving()) {
-                    var touchEvents = getEventsPage(e);
-                    touchEndY = touchEvents.y;
-                    touchEndX = touchEvents.x;
-
-                  //$('body').append('<span style="position:fixed; top: 250px; left: 20px; z-index:88; font-size: 25px; color: #000;">touchEndY: ' + touchEndY  + '</div>');
-
-                    //X movement bigger than Y movement?
-                    if (options.direction === 'horizontal' && Math.abs(touchStartX - touchEndX) > (Math.abs(touchStartY - touchEndY))) {
-                        //is the movement greater than the minimum resistance to scroll?
-                        if (Math.abs(touchStartX - touchEndX) > (container.width() / 100 * options.touchSensitivity)) {
-                            if (touchStartX > touchEndX) {
-                                scrolling('down', scrollable);
-                            } else if (touchEndX > touchStartX) {
-                                scrolling('up', scrollable);
-                            }
-                        }
-                    } else {
-                        if (Math.abs(touchStartY - touchEndY) > (container.height() / 100 * options.touchSensitivity)) {
-                            if (touchStartY > touchEndY) {
-                                scrolling('down', scrollable);
-                            } else if (touchEndY > touchStartY) {
-                                scrolling('up', scrollable);
-                            }
-                        }
-                    }
-                }
+	            // additional: if one of the normalScrollElements isn't within options.normalScrollElementTouchThreshold hops up the DOM chain
+	            if ( !checkParentForNormalScrollElement(event.target) && isReallyTouch(e) ) {
+	
+	                var activeSection = $('.pp-section.active');
+	                var scrollable = isScrollable(activeSection);
+	
+	                if(!scrollable.length){
+	                    event.preventDefault();
+	                }
+	
+	                if (!isMoving()) {
+	                    var touchEvents = getEventsPage(e);
+	                    touchEndY = touchEvents.y;
+	                    touchEndX = touchEvents.x;
+	
+	                  //$('body').append('<span style="position:fixed; top: 250px; left: 20px; z-index:88; font-size: 25px; color: #000;">touchEndY: ' + touchEndY  + '</div>');
+	
+	                    //X movement bigger than Y movement?
+	                    if (options.direction === 'horizontal' && Math.abs(touchStartX - touchEndX) > (Math.abs(touchStartY - touchEndY))) {
+	                        //is the movement greater than the minimum resistance to scroll?
+	                        if (Math.abs(touchStartX - touchEndX) > (container.width() / 100 * options.touchSensitivity)) {
+	                            if (touchStartX > touchEndX) {
+	                                scrolling('down', scrollable);
+	                            } else if (touchEndX > touchStartX) {
+	                                scrolling('up', scrollable);
+	                            }
+	                        }
+	                    } else {
+	                        if (Math.abs(touchStartY - touchEndY) > (container.height() / 100 * options.touchSensitivity)) {
+	                            if (touchStartY > touchEndY) {
+	                                scrolling('down', scrollable);
+	                            } else if (touchEndY > touchStartY) {
+	                                scrolling('up', scrollable);
+	                            }
+	                        }
+	                    }
+	                }
+	            }
             }
         }
 
