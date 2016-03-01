@@ -90,6 +90,7 @@ $(document).ready(function() {
         keyboardScrolling: true,
         sectionSelector: '.section',
         animateAnchor: false,
+        minWidth: 1024, // the miniumum width for which scrolling/touch events should apply
 
 		//events
 		onLeave: function(index, nextIndex, direction){},
