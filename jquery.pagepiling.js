@@ -1,5 +1,6 @@
 /*!
  * pagepiling.js 1.5.3
+ * WITH MODIFICATION TO MINIMUM WIDTHS
  *
  * https://github.com/alvarotrigo/pagePiling.js
  * MIT licensed
