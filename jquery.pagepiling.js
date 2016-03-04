@@ -157,11 +157,10 @@
         if(options.css3){
             options.css3 = support3d();
         }
-
         $(container).css({
             'overflow' : 'hidden',
-            '-ms-touch-action': 'none',  /* Touch detection for Windows 8 */
-            'touch-action': 'none'       /* IE 11 on Windows Phone 8.1*/
+            '-ms-touch-action': ($(window).width() < options.minWidth ? 'initial' : 'none'),  /* Touch detection for Windows 8 */
+            'touch-action': ($(window).width() < options.minWidth ? 'initial' : 'none')       /* IE 11 on Windows Phone 8.1*/
         });
 
         //init
@@ -454,6 +453,7 @@
         * If the browser is smaller than the minimum width, revert the touch-action to initial
         */
         function windowResizeHandler(){
+            
                 if ($(window).width() < options.minWidth){
                     container.css("touch-action","initial");
                 } else {
@@ -805,7 +805,6 @@
         */
         function touchMoveHandler(event){
             var e = event.originalEvent;
-            
             if ($(window).width() >= options.minWidth){
 
 	            // additional: if one of the normalScrollElements isn't within options.normalScrollElementTouchThreshold hops up the DOM chain
